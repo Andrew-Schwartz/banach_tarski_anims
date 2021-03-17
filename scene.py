@@ -30,7 +30,7 @@ class DecomposeTriangle(Scene):
         bot_brace_small_text = bot_brace_small.get_text("3 Units")
         shifty(bot_brace_small)
         shifty(bot_brace_small_text)
-        self.play(FadeIn(shifty(tri_small)))
+        self.play(ShowCreation(shifty(tri_small)))
         self.add(shifty(anti_triangle))
         self.remove(tri1)
         self.play(Rotate(tri_small, about_point=pt2(3 - 2, 1.5 - 1)), Transform(bot_brace, bot_brace_small),
