@@ -1,0 +1,1 @@
+manim scene.py DecomposeTriangle -pql
