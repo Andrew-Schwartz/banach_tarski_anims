@@ -1,0 +1,1 @@
+manim decompose_triangle.py DecomposeIsosceles -pql
