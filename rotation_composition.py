@@ -16,7 +16,7 @@ def unit(array: np.ndarray) -> np.ndarray:
 
 class Rotato(ThreeDScene):
     def rotatoes(self, rotation_vectors):
-        prism = Prism()
+        prism = ColorPrism()
         individual = prism.copy()
         self.play(ShowCreation(individual))
         for rotation in rotation_vectors:
@@ -49,38 +49,44 @@ class Rotato(ThreeDScene):
         self.wait(1)
 
 
-class ColorPrism(ThreeDVMobject):
+class ColorPrism(VGroup):
     colors = [
-        BLUE,
-        TEAL,
-        GREEN,
-        YELLOW,
-        RED,
-        PURPLE
+        "#FFD500",
+        "#C41E3A",
+        "#009E60",
+        "#FF5800",
+        "#0051BA",
+        "#FFFFFF",
     ]
 
-    # colors = [
-    #     "#FFD500",  # Yellow
-    #     "#C41E3A",  # Orange
-    #     "#009E60",  # Green
-    #     "#FF5800",  # Red
-    #     "#0051BA",  # Blue
-    #     "#FFFFFF"  # White
-    # ]
-
-    CONFIG = {
-        "colors": [
-            "#FFD500",  # Yellow
-            "#C41E3A",  # Orange
-            "#009E60",  # Green
-            "#FF5800",  # Red
-            "#0051BA",  # Blue
-            "#FFFFFF"  # White
-        ],
-    }
-
-    def __init__(self):
-        ThreeDVMobject.__init__(self)
+    # noinspection PyDefaultArgument
+    def __init__(
+            self,
+            dimensions=[3, 2, 1],
+            side_length=2,
+            fill_opacity=0.75,
+            stroke_width=0,
+            **kwargs,
+    ):
+        self.side_length = side_length
+        self.dimensions = dimensions
+        super().__init__(
+            *[
+                Square(
+                    side_length=self.side_length,
+                    fill_color=color,
+                    fill_opacity=fill_opacity,
+                    stroke_width=stroke_width,
+                ).flip().shift(self.side_length * OUT / 2).apply_matrix(z_to_vector(vec))
+                for vec, color in zip([IN, OUT, LEFT, RIGHT, UP, DOWN], self.colors)
+            ],
+            fill_opacity=fill_opacity,
+            stroke_width=stroke_width,
+            **kwargs
+        )
+        self.set_shade_in_3d(True)
+        for dim, value in enumerate(self.dimensions):
+            self.rescale_to_fit(value, dim, stretch=True)
 
 
 class Composition2(Rotato):
