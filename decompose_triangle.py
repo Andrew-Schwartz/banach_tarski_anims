@@ -27,7 +27,9 @@ class DecomposeRight(Scene):
                         A_i&=\frac{1}{2}b_ih \\
                         &=9\ \text{Units}^2
                     \end{align*}""")
-        self.play(Write(shifty(area1, pt(4, 3))))
+        area1.to_corner(UR)
+        self.play(Write(area1))
+        # self.play(Write(shifty(area1, pt(4, 3))))
 
         tri_small = Polygon(pt(3, 0), pt(6, 0), pt(6, .01), pt(3, 1.5))
         anti_triangle = Polygon(pt(0, 0), pt(3, 0), pt(3, 1.5), pt(0, 3))
@@ -50,7 +52,8 @@ class DecomposeRight(Scene):
                         A_i&=\frac{1}{2}b_ih=b_fh=A_f \\
                         &=9\ \text{Units}^2 \quad\ = 9\ \text{Units}^2
                      \end{align*}""")
-        shifty(area2, pt(4, 3))
+        area2.to_corner(UR)
+        area2.shift(pt(.5, 0))
         self.play(FadeOut(anti_triangle), FadeOut(tri_small), FadeIn(square1), Transform(area1, area2))
         self.wait(2)
 
@@ -83,7 +86,7 @@ class DecomposeIsosceles(Scene):
         area1 = Tex(r"""\begin{align*}
                         A_i&=\frac{1}{2}b_ih \\
                         &=13.5\ \text{Units}^2
-                    \end{align*}""").shift(pt(4, 3))
+                    \end{align*}""").to_corner(UR)
         self.play(Write(area1))
 
         self.play(
@@ -119,7 +122,7 @@ class DecomposeIsosceles(Scene):
         area2 = Tex(r"""\begin{align*}
                         A_i&=\frac{1}{2}b_ih=b_fh=A_f \\
                         &=13.5\ \text{Units}^2 = 13.5\ \text{Units}^2
-                    \end{align*}""").shift(pt(3, 3))
+                    \end{align*}""").to_corner(UR)
 
         self.play(FadeIn(square), FadeOut(anti_tri), FadeOut(tri1), FadeOut(tri2), Transform(area1, area2))
 
