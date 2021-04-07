@@ -81,9 +81,9 @@ class Step3(ThreeDScene):
         # associativity
         self.add(ThreeDAxes())
         self.set_camera_orientation(phi=75 * DEGREES, theta=90 * DEGREES)
-        shl = 1.5 * LEFT
+        shl = 2.25 * LEFT
         sl = Sphere().shift(shl)
-        shr = 1.5 * RIGHT
+        shr = 2.25 * RIGHT
         sr = Sphere().shift(shr)
         self.play(ShowCreation(sr), ShowCreation(sl))
         self.wait(1)
@@ -128,12 +128,14 @@ class Step3(ThreeDScene):
         self.play(
             Rotate(sl, axis=xi_dir),
             Rotate(sr, angle=npla.norm(psi_xi_dir), axis=psi_xi_dir),
+            run_time=2.4
         )
         phi_psi_dir = compose(PI * unit(psi_dir), PI * unit(phi_dir))
         self.play(Indicate(phi_axis_r), Indicate(phi_axis_l), Indicate(psi_axis_l))
         self.play(
             Rotate(sl, angle=npla.norm(phi_psi_dir), axis=phi_psi_dir),
             Rotate(sr, axis=phi_dir),
+            run_time=2.4
         )
 
         self.wait(2)
