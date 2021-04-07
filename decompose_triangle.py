@@ -127,3 +127,114 @@ class DecomposeIsosceles(Scene):
         self.play(FadeIn(square), FadeOut(anti_tri), FadeOut(tri1), FadeOut(tri2), Transform(area1, area2))
 
         self.wait(2)
+
+
+class DecomposeIsosceles2(Scene):
+    def construct(self):
+        angle = np.arcsin(2 / 6)
+        q = 6 * np.cos(angle)
+        pt1, pt2, pt3 = pt(0, 0), pt(4, 0), pt(q, 2)
+        tri = Polygon(pt1, pt2, pt3)
+        com = com_shift(tri)
+        tri.shift(com)
+        self.play(ShowCreation(tri), run_time=1)
+        angle = PI - angle
+        line_b = Line(pt1, pt2).shift(com)
+        brace_b = Brace(line_b, direction=line_b.copy().rotate(-PI / 2).get_unit_vector())
+        text_b = brace_b.get_text("4 Units")
+        line_h = Line(pt1, pt(0, pt3[1])).shift(com)
+        brace_h = Brace(line_h, direction=line_h.copy().rotate(PI / 2).get_unit_vector())
+        # this make is display so don't change the "\ 2"
+        text_h = brace_h.get_text("\ 2 Units")
+        self.play(
+            ShowCreation(brace_b), ShowCreation(text_b),
+            ShowCreation(brace_h), ShowCreation(text_h),
+        )
+        self.wait(1)
+        area1 = Tex(r"$A=\frac{1}{2}bh=\frac{1}{2}\cdot4\cdot2=4$").to_corner(UR)
+        self.play(Write(area1))
+        self.wait(2)
+
+        self.play(
+            FadeOut(area1),
+            FadeOut(brace_h), FadeOut(text_h),
+            FadeOut(brace_b), FadeOut(text_b),
+        )
+
+        line_new_b = Line(pt3, pt1).shift(com)
+        brace_new_b = Brace(line_new_b, direction=line_new_b.copy().rotate(-PI / 2).get_unit_vector())
+        text_new_b = brace_new_b.get_text("6 Units").shift(0.2 * LEFT)
+
+        self.play(
+            ShowCreation(brace_new_b),
+            Write(text_new_b),
+        )
+
+        self.wait(2)
+
+        self.play(
+            Rotate(tri, angle=angle, about_point=pt(0, 0), run_time=2),
+            Rotate(brace_new_b, angle=angle, about_point=pt(0, 0), run_time=2),
+            Rotate(text_new_b, angle=angle, about_point=pt(0, 0), run_time=2),
+        )
+        # noinspection PyTypeChecker
+        self.play(
+            Rotate(text_new_b, angle=-angle),
+        )
+        print(tri.get_vertices())
+        # y1 == y3
+        [[x1, y1, _], [x2, y2, _], [x3, _, _]] = tri.get_vertices()
+        square = Polygon(
+            pt((x2 + x3) / 2, y1),
+            pt((x2 + x3) / 2, y2),
+            pt((x1 + x2) / 2, y2),
+            pt((x1 + x2) / 2, y1),
+        )
+        tri1 = Polygon(
+            pt(x3, y1),
+            pt((x2 + x3) / 2, (y2 + y1) / 2),
+            pt((x2 + x3) / 2, y1),
+        )
+        tri2 = Polygon(
+            pt(x1, y1),
+            pt((x1 + x2) / 2, (y2 + y1) / 2),
+            pt((x1 + x2) / 2, y1),
+        )
+        anti_tri = Polygon(
+            pt((x1 + x2) / 2, y1),
+            pt((x1 + x2) / 2, (y2 + y1) / 2),
+            pt(x2, y2),
+            pt((x2 + x3) / 2, (y2 + y1) / 2),
+            pt((x2 + x3) / 2, y1),
+        )
+
+        brace1 = Brace(tri1)
+        text1 = brace1.get_text(f"{((x2 + x1) / 2).__abs__().__round__(2)}")
+        brace2 = Brace(tri2)
+        text2 = brace2.get_text(f"{((x2 + x3) / 2).__abs__().__round__(2)}")
+        brace_anti = Brace(anti_tri)
+        text_anti = brace_anti.get_text(f"{((x2 + x3) / 2 - (x2 + x1) / 2).__abs__().__round__(2)}")
+        self.play(
+            Transform(brace_new_b, brace_new_b.copy().shift(DOWN)),
+            Transform(text_new_b, text_new_b.copy().shift(DOWN)),
+            ShowCreation(anti_tri),
+            ShowCreation(brace1),
+            ShowCreation(text1),
+            ShowCreation(brace2),
+            ShowCreation(text2),
+            ShowCreation(brace_anti),
+            ShowCreation(text_anti),
+        )
+        self.add(tri1, tri2)
+        self.remove(tri)
+
+        self.wait(2)
+
+        # noinspection PyTypeChecker
+        self.play(
+            Rotate(tri2, about_point=pt((x1 + x2) / 2, (y2 + y1) / 2)),
+            Rotate(tri1, about_point=pt((x2 + x3) / 2, (y2 + y1) / 2), angle=-PI),
+            run_time=1.4
+        )
+
+        self.wait(2)
