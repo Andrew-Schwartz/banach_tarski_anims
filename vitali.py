@@ -66,5 +66,43 @@ class Vitalanim(Scene):
         self.play(ShowCreation(liner))
         self.play(MoveAlongPath(square,liner))
         self.play(ShowCreation(psquare))
+        
+def seg(x,y):
+    return np.array([x,y,0])
+
+class ChoiceAxiom(Scene):
+    def construct(self):
+        axes=Axes()
+        c1=np.array([-5,0,0])
+        c2=np.array([5,0,0])
+        line1=Line(c1,c2,color=ORANGE)
+        line2=Line(c1,c2,color=RED)
+        line3=Line(c1,c2,color=GREEN)
+        line4=Line(c1,c2,color=PURPLE)
+        line5=Line(c1,c2,color=BLUE)
+        l1 = Line(seg(2*.2,0), seg(2*.3,0), color=ORANGE)
+        l2 = Line(seg(0,2.5), seg(2*.1,2.5), color=RED)
+        l3 = Line(seg(2*.4,-2.5), seg(2*.5,-2.5), color=GREEN)
+        l4 = Line(seg(2*.1,1,), seg(2*.2,1), color=PURPLE)
+        l5 = Line(seg(2*.3,-1), seg(2*.4,-1), color=BLUE)
+        line1.set_opacity(0.5)
+        line2.set_opacity(0.5)
+        line3.set_opacity(0.5)
+        line4.set_opacity(0.5)
+        line5.set_opacity(0.5)
+        lineu = Line(start=np.array([0, 0, 0]), end=np.array([0, 2.5, 0]), opacity=0)
+        lined = Line(start=np.array([0, 0, 0]), end=np.array([0, -2.5, 0]), opacity=0)
+        lineu2 = Line(start=np.array([0, 0, 0]), end= np.array([0, 1, 0]), opacity=0)
+        lined2 = Line(start=np.array([0, 0, 0]), end=np.array([0, -1, 0]), opacity=0)
+        lineu.set_opacity(0)
+        lined.set_opacity(0)
+        lineu2.set_opacity(0)
+        lined2.set_opacity(0)
+        self.add(axes)
+        self.play(ShowCreation(line1),ShowCreation(line2),ShowCreation(line3),ShowCreation(line4),ShowCreation(line5),ShowCreation(lineu),ShowCreation(lined),ShowCreation(lineu2),ShowCreation(lined2))
+        self.play(MoveAlongPath(line2,lineu),MoveAlongPath(line3,lined),MoveAlongPath(line4,lineu2),MoveAlongPath(line5,lined2),run_time=3)
+        self.play(FadeIn(l1),FadeIn(l2),FadeIn(l3),FadeIn(l4),FadeIn(l5),run_time=3)
+        self.play(FadeOut(line1),FadeOut(line2),FadeOut(line3),FadeOut(line4),FadeOut(line5))
+
 
 
